@@ -1,9 +1,10 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from mysite.bands.views import BandForm
+from mysite.bands.views import MemberForm
 
-urlpatterns = patterns('',
+urlpatterns = patterns('mysite.bands.views',
 
-    'mysite.bands.views',
     url(r'^$', 'home', name='home'),
     url(r'^bands/$', 'band_listing', name='bands'),
     url(r'^bands/(?P<pk>\d+)/$', 'band_detail', name='band_detail'),

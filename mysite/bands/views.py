@@ -1,7 +1,10 @@
-ffrom django.shortcuts import render
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Band, Member
+from django.views.generic.edit import CreateView
+from django.core.urlresolvers import reverse
+from mysite.bands.forms import BandContactForm
 
 def home(request):
     return HttpResponse('Welcome to the site!')
@@ -32,16 +35,6 @@ def band_detail(request, pk):
     context = {'members': members, 'band': band}
     return render(request, 'bands/band_detail.html', context)
 
-class BandForm(CreateView):
-    template_name = 'bands/band_form.html'
-    model = Band
-    success_url = reverse_lazy('bands')
-
-class MemberForm(CreateView):
-    template_name = 'bands/member_form.html'
-    model = Member
-    success_url = reverse_lazy('bands')
-
 @login_required(login_url='/accounts/login/')
 def protected_view(request):
     """ A view that can only be accessed by logged-in users """
@@ -50,3 +43,13 @@ def protected_view(request):
 def message(request):
     """ Message if is not authenticated. Simple view! """
     return HttpResponse('Access denied!')
+
+class BandForm(CreateView):
+    template_name = 'bands/band_form.html'
+    model = Band
+    success_url = 'bands/'
+
+class MemberForm(CreateView):
+    template_name = 'bands/member_form.html'
+    model = Member
+    success_url = 'bands/'
