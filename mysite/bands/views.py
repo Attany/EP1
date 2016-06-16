@@ -13,3 +13,11 @@ def band_listing(request):
     if var_get_search is not None:
         bands = bands.filter(name__icontains=var_get_search)
     return render(request, 'bands/band_listing.html', {'bands': bands})
+
+def band_contact(request):
+    """ A example of form """
+    if request.method == 'POST':
+        form = BandContactForm(request.POST)
+    else:
+        form = BandContactForm()
+    return render(request, 'bands/band_contact.html', {'form': form})
