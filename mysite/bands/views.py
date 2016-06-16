@@ -41,3 +41,12 @@ class MemberForm(CreateView):
     template_name = 'bands/member_form.html'
     model = Member
     success_url = reverse_lazy('bands')
+
+@login_required(login_url='/accounts/login/')
+def protected_view(request):
+    """ A view that can only be accessed by logged-in users """
+    return render(request, 'bands/protected.html', {'current_user': request.user})
+
+def message(request):
+    """ Message if is not authenticated. Simple view! """
+    return HttpResponse('Access denied!')
