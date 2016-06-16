@@ -6,6 +6,9 @@ from .models import Band, Member
 def home(request):
     return HttpResponse('Welcome to the site!')
 
+def home(request):
+    return render(request, 'home.html')
+
 def band_listing(request):
     """ A view of all bands. """
     bands = Band.objects.all()
@@ -21,3 +24,10 @@ def band_contact(request):
     else:
         form = BandContactForm()
     return render(request, 'bands/band_contact.html', {'form': form})
+
+def band_detail(request, pk):
+    """ A view of all members by bands. """
+    band = Band.objects.get(pk=pk)
+    members = Member.objects.all().filter(band=band)
+    context = {'members': members, 'band': band}
+    return render(request, 'bands/band_detail.html', context)
