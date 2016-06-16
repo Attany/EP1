@@ -15,6 +15,15 @@ class Band(models.Model):
     def __str__(self):
         return self.name
 
+    # count members by band
+    # conta os membros por banda
+    def get_members_count(self):
+        return self.band.count()
+
+    # retorna a url no formato /bands/1
+    def get_band_detail_url(self):
+        return u"/bands/%i" % self.id
+
 
 class Member(models.Model):
 
