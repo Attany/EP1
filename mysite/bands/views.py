@@ -31,3 +31,13 @@ def band_detail(request, pk):
     members = Member.objects.all().filter(band=band)
     context = {'members': members, 'band': band}
     return render(request, 'bands/band_detail.html', context)
+
+class BandForm(CreateView):
+    template_name = 'bands/band_form.html'
+    model = Band
+    success_url = reverse_lazy('bands')
+
+class MemberForm(CreateView):
+    template_name = 'bands/member_form.html'
+    model = Member
+    success_url = reverse_lazy('bands')
