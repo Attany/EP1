@@ -35,15 +35,6 @@ def band_detail(request, pk):
     context = {'members': members, 'band': band}
     return render(request, 'bands/band_detail.html', context)
 
-@login_required(login_url='/accounts/login/')
-def protected_view(request):
-    """ A view that can only be accessed by logged-in users """
-    return render(request, 'bands/protected.html', {'current_user': request.user})
-
-def message(request):
-    """ Message if is not authenticated. Simple view! """
-    return HttpResponse('Access denied!')
-
 class BandForm(CreateView):
     template_name = 'bands/band_form.html'
     model = Band
@@ -53,3 +44,14 @@ class MemberForm(CreateView):
     template_name = 'bands/member_form.html'
     model = Member
     success_url = 'bands/'
+
+@login_required(login_url='/accounts/login/')
+def protected_view(request):
+    """ A view that can only be accessed by logged-in users """
+    return render(request, 'bands/protected.html', {'current_user': request.user})
+
+def message(request):
+    """ Message if is not authenticated. Simple view! """
+    return HttpResponse('Access denied!')
+
+
