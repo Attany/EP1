@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models.signals import post_save
 
 class Band(models.Model):
 
@@ -48,4 +48,12 @@ class Member(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def my_callback(sender, **kwargs):
+        print ("")
+        print ("Model salva!")
+        print ("")
+
+post_save.connect(my_callback)
     
