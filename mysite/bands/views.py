@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Band, Member
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse
 from mysite.bands.forms import BandContactForm
+from django.contrib.auth import logout as auth_logout
+from django.template.context import RequestContext
 
 def home(request):
     return HttpResponse('Welcome to the site!')
@@ -54,4 +56,16 @@ def message(request):
     """ Message if is not authenticated. Simple view! """
     return HttpResponse('Access denied!')
 
+def login(request):
+    # context = RequestContext(request, {
+    #     'request': request, 'user': request.user})
+    # return render_to_response('login.html', context_instance=context)
+    return render(request, 'login.html')
 
+@login_required(login_url='/')
+def home(request):
+    return render_to_response('home.html')
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/')
