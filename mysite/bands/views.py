@@ -8,11 +8,11 @@ from mysite.bands.forms import BandContactForm
 from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
 
-def home(request):
-    return HttpResponse('Welcome to the site!')
+#def home(request):
+ #   return HttpResponse('Welcome to the site!')
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html',{'user':request.user})
 
 def band_listing(request):
     """ A view of all bands. """
@@ -34,7 +34,7 @@ def band_detail(request, pk):
     """ A view of all members by bands. """
     band = Band.objects.get(pk=pk)
     members = Member.objects.all().filter(band=band)
-    context = {'members': members, 'band': band}
+    context = {'members': members, 'band': band,'user':request.user}
     return render(request, 'bands/band_detail.html', context)
 
 class BandForm(CreateView):
@@ -55,16 +55,6 @@ def protected_view(request):
 def message(request):
     """ Message if is not authenticated. Simple view! """
     return HttpResponse('Access denied!')
-
-def login(request):
-    # context = RequestContext(request, {
-    #     'request': request, 'user': request.user})
-    # return render_to_response('login.html', context_instance=context)
-    return render(request, 'login.html')
-
-@login_required(login_url='/')
-def home(request):
-    return render_to_response('home.html')
 
 def logout(request):
     auth_logout(request)
