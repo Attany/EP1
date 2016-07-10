@@ -1,16 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Band, Member
 from django.views.generic.edit import CreateView
 from django.core.urlresolvers import reverse
 from mysite.bands.forms import BandContactForm
+from django.contrib.auth import logout as auth_logout
+from django.template.context import RequestContext
+
+#def home(request):
+ #   return HttpResponse('Welcome to the site!')
 
 def home(request):
-    return HttpResponse('Welcome to the site!')
-
-def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html',{'user':request.user})
 
 def band_listing(request):
     """ A view of all bands. """
@@ -32,7 +34,7 @@ def band_detail(request, pk):
     """ A view of all members by bands. """
     band = Band.objects.get(pk=pk)
     members = Member.objects.all().filter(band=band)
-    context = {'members': members, 'band': band}
+    context = {'members': members, 'band': band,'user':request.user}
     return render(request, 'bands/band_detail.html', context)
 
 class BandForm(CreateView):
@@ -54,4 +56,6 @@ def message(request):
     """ Message if is not authenticated. Simple view! """
     return HttpResponse('Access denied!')
 
-
+def logout(request):
+    auth_logout(request)
+    return redirect('/')
